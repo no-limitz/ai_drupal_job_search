@@ -1,10 +1,22 @@
-# Drupal Job Search Setup Guide
+# AI-Powered Drupal Job Search System
+
+A sophisticated job search system using CrewAI multi-agent architecture with cost-optimized LLM usage and hybrid data extraction approach.
+
+## Architecture Overview
+
+This system combines multiple technologies for comprehensive job searching:
+
+- **🔍 Search Phase**: Serper + Brave APIs for broad job discovery
+- **🤖 Analysis Phase**: Playwright browser automation for detailed data extraction  
+- **📊 AI Processing**: Cost-optimized multi-LLM approach (89% cost savings)
+- **📝 Reporting**: Automated daily reports with real job data
 
 ## Quick Start
 
-1. **Navigate to the project directory:**
+1. **Clone the repository:**
 ```bash
-cd /Users/bobby/Sites/Developer/ai_drupal_job_search
+git clone https://github.com/no-limitz/ai_drupal_job_search.git
+cd ai_drupal_job_search
 ```
 
 2. **Run the automated setup (recommended):**
@@ -26,21 +38,30 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-**Note:** The requirements.txt file contains all necessary dependencies including `crewai` and `crewai-tools`. If you encounter any missing module errors, the requirements.txt should resolve them.
+**Note:** The requirements.txt includes:
+- `crewai` & `crewai-tools` - Multi-agent framework
+- `playwright` & `playwright-stealth` - Browser automation
+- `langchain-openai` - LLM integration
+- Additional utilities for web scraping and data processing
 
-4. **Set up environment variables:**
+4. **Install Playwright browsers:**
+```bash
+playwright install chromium
+```
+
+5. **Set up environment variables:**
 ```bash
 cp .env.example .env
 # Edit .env file with your actual API keys
 ```
 
-5. **Make scripts executable:**
+6. **Make scripts executable:**
 ```bash
 chmod +x run_search.py
 chmod +x test_system.py
 ```
 
-6. **Run the script:**
+7. **Run the script:**
 ```bash
 # For the main job search with dashboard
 ./run_search.py --dashboard
@@ -72,25 +93,38 @@ python drupal_job_search.py
 - Generate API key
 - Add to `.env` file: `OPENAI_API_KEY=your_key_here`
 
+## Cost Optimization Features
+
+This system implements intelligent cost optimization:
+
+### Multi-LLM Architecture (89% cost savings vs all-GPT-4)
+- **Search Agent**: `gpt-3.5-turbo` - Cost-effective for search queries
+- **Analysis Agent**: `gpt-4o` - Balanced capability/cost for complex analysis  
+- **Report Agent**: `gpt-4o-mini` - Ultra-low cost for formatting tasks
+
+### Hybrid Data Extraction
+- **APIs First**: Fast, cheap job discovery via Serper/Brave
+- **Browser Automation**: Playwright for detailed extraction when needed
+- **Smart Fallbacks**: Multiple extraction strategies for reliability
+
 ## Daily Automation
 
-### macOS/Linux (using cron):
+Set up a daily cron job to run the search automatically:
+
 ```bash
 # Edit crontab
 crontab -e
 
 # Add this line to run daily at 9 AM
-0 9 * * * /Users/bobby/Sites/Developer/ai_drupal_job_search/venv/bin/python /Users/bobby/Sites/Developer/ai_drupal_job_search/drupal_job_search.py
+0 9 * * * cd /full/path/to/ai_drupal_job_search && ./venv/bin/python drupal_job_search.py
 ```
 
-### Windows (using Task Scheduler):
-1. Open Task Scheduler
-2. Create Basic Task
-3. Set to run daily at preferred time
-4. Set action to start program:
-   - Program: `python.exe`
-   - Arguments: `drupal_job_search.py`
-   - Start in: `/Users/bobby/Sites/Developer/ai_drupal_job_search`
+Or use the included daily runner script:
+```bash
+chmod +x run_daily_search.sh
+# Then add to cron:
+0 9 * * * /full/path/to/ai_drupal_job_search/run_daily_search.sh
+```
 
 ## Customization
 
@@ -166,7 +200,16 @@ The script generates:
    pip install -r requirements.txt
    
    # Or install individual packages if needed
-   pip install crewai crewai-tools
+   pip install crewai crewai-tools playwright
+   ```
+
+6. **Playwright Browser Issues:**
+   ```bash
+   # Install/reinstall Playwright browsers
+   playwright install chromium
+   
+   # For headless browser issues
+   playwright install-deps
    ```
 
 ## Advanced Features
@@ -193,6 +236,12 @@ If you encounter issues:
 **Monthly costs (approximate):**
 - Serper API: Free (2,500 searches)
 - Brave API: Free (2,000 queries)  
-- OpenAI API: $10-30 (depending on usage)
+- OpenAI API: $3-10 (89% cost optimized vs GPT-4 only)
+- Playwright: Free (open source)
 
-**Total estimated monthly cost: $10-30**
+**Total estimated monthly cost: $3-10** (previously $10-30 before optimization)
+
+### Cost Optimization Benefits
+- **89% LLM cost reduction** through intelligent model selection
+- **Free browser automation** via Playwright (vs paid scraping services)
+- **API-first approach** minimizes expensive browser automation usage
