@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(./run_bug_001_tests.sh:*)",
+      "Bash(ls:*)",
+      "Bash(./run_search.py --no-notifications)",
+      "Bash(grep:*)"
+    ],
+    "deny": []
+  }
+}
